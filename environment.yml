@@ -1,0 +1,11 @@
+name: arma_theory_app
+channels:
+  - conda-forge
+dependencies:
+  - matplotlib
+  - nicegui
+  - numpy
+  - pandas
+  - plotly
+  - python>=3.13
+  - scipy
