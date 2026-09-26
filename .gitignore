@@ -1,0 +1,30 @@
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments and secrets (keep environment.yml tracked)
+.venv/
+venv/
+env/
+.env/
+.env
+.env.*
+!.env.example
+.conda/
+
+# NiceGUI local storage
+.nicegui/
+
+# OS, notebooks, and editors
+.DS_Store
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

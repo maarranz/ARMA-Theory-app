@@ -1,6 +1,6 @@
 # ARMA Theory Explorer
 
-A NiceGUI teaching app for exploring theoretical autoregressive moving-average (ARMA) models. `arma_theory.py` provides the econometric engine; `app.py` currently contains the working interface.
+A NiceGUI teaching app for exploring theoretical autoregressive moving-average (ARMA) models. `arma_theory.py` provides the econometric engine; `app.py` assembles per-client pages from the UI components.
 
 ## Current functionality
 
@@ -27,10 +27,11 @@ python app.py
 
 Open the local URL printed by NiceGUI in your browser (normally http://localhost:8080).
 
-## Pre-refactor structure
+## Repository structure
 
 ```text
 ARMA-Theory-app/
+├── .gitignore
 ├── app.py
 ├── arma_theory.py
 ├── environment.yml
@@ -47,4 +48,6 @@ ARMA-Theory-app/
     └── values.py
 ```
 
-`examples.py`, `model_state.py`, and all files in `components/` are empty placeholders for a future refactor. No working code has been moved or duplicated; the existing app behavior is preserved.
+`examples.py` contains the built-in model specifications. `model_state.py` holds per-client control references, coefficient extraction, equation formatting, and change subscriptions. `components/sidebar.py` owns model inputs and example loading; `components/properties.py` owns diagnostics. The remaining components preserve the placeholder tabs.
+
+The `@ui.page('/')` factory creates fresh controls and callbacks for every client. There is no shared mutable UI/model instance at module level. `arma_theory.py` remains the unchanged econometric engine.
