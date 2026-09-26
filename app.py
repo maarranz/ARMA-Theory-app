@@ -56,7 +56,7 @@ def index():
                 create_properties(state)
 
             with ui.tab_panel(correlations):
-                create_correlations()
+                create_correlations(state)
 
             with ui.tab_panel(dynamics):
                 create_dynamics()
