@@ -1,20 +1,8 @@
 """Reactive model diagnostics, inverse-root plot, and root details."""
 from nicegui import ui
 import arma_theory as arma
-from model_state import ModelState
+from model_state import ModelState, format_roots
 
-
-def _format_roots(roots) -> str:
-    """Format diagnostic roots without exposing NumPy array notation."""
-    def format_root(root):
-        value = complex(root)
-        real = f'{value.real:.4g}' if value.real else '0'
-        if abs(value.imag) < 1e-12:
-            return real
-        sign = '+' if value.imag >= 0 else '−'
-        return f'{real} {sign} {abs(value.imag):.4g}i'
-
-    return '; '.join(format_root(root) for root in roots) or 'None (constant polynomial)'
 
 
 def create_properties(state: ModelState) -> None:
@@ -35,6 +23,8 @@ def create_properties(state: ModelState) -> None:
             representation_label = ui.label().classes('text-lg')
 
     ui.label('Inverse Roots').classes('text-xl font-bold mt-6')
+    ui.label('Inverse roots are shown relative to the unit circle: AR roots diagnose '
+             'causality; MA roots diagnose invertibility.').classes('text-sm')
     with ui.card().classes('w-full items-center'):
         inverse_root_plot = ui.plotly({'data': [], 'layout': {}}).classes('w-full')
 
@@ -70,7 +60,7 @@ def create_properties(state: ModelState) -> None:
             ('ma_roots', 'MA roots'),
             ('inverse_ma_roots', 'Inverse MA roots'),
         ):
-            root_labels[key].set_text(f'{title}: {_format_roots(diagnostics[key])}')
+            root_labels[key].set_text(f'{title}: {format_roots(diagnostics[key])}')
 
     state.on_change(update_properties)
     update_properties()

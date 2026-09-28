@@ -68,3 +68,38 @@ class ModelState:
         ma_polynomial = ' '.join(ma_terms)
 
         return rf'$$ ({ar_polynomial})y_t = ({ma_polynomial})\varepsilon_t $$'
+
+    def equation_mathml(self) -> str:
+        """Native browser math markup generated only from numeric model inputs."""
+        ar, ma = self.current_coefficients()
+
+        def polynomial(coefficients, ar_side):
+            terms = ['<mn>1</mn>']
+            for lag, coefficient in enumerate(coefficients, 1):
+                if f'{abs(coefficient):.2f}' == '0.00':
+                    continue
+                negative = coefficient >= 0 if ar_side else coefficient < 0
+                sign = '−' if negative else '+'
+                power = '<mi>L</mi>' if lag == 1 else f'<msup><mi>L</mi><mn>{lag}</mn></msup>'
+                terms.append(f'<mo>{sign}</mo><mn>{abs(coefficient):.2f}</mn>{power}')
+            return '<mrow><mo>(</mo>' + ''.join(terms) + '<mo>)</mo></mrow>'
+
+        return (
+            '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">'
+            '<mrow>' + polynomial(ar, True) + '<msub><mi>y</mi><mi>t</mi></msub>'
+            '<mo>=</mo>' + polynomial(ma, False) +
+            '<msub><mi>ε</mi><mi>t</mi></msub></mrow></math>'
+        )
+
+
+def format_roots(roots) -> str:
+    """Format diagnostic roots without exposing NumPy array notation."""
+    def format_root(root):
+        value = complex(root)
+        real = f'{value.real:.4g}' if value.real else '0'
+        if abs(value.imag) < 1e-12:
+            return real
+        sign = '+' if value.imag >= 0 else '−'
+        return f'{real} {sign} {abs(value.imag):.4g}i'
+
+    return '; '.join(format_root(root) for root in roots) or 'None (constant polynomial)'

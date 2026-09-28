@@ -37,12 +37,11 @@ def index():
         ui.label('Current model').classes('text-xl font-bold mt-4')
 
         with ui.card().classes('w-full items-center'):
-            model_equation = ui.markdown(
-                r'$$ (1 - 0.70L)y_t = \varepsilon_t $$'
-            ).classes('text-xl')
+            model_equation = ui.html(state.equation_mathml(), sanitize=False).classes(
+                'text-xl w-full overflow-x-auto overflow-y-hidden py-1'
+            )
 
-        state.on_change(lambda: model_equation.set_content(state.equation()))
-        model_equation.set_content(state.equation())
+        state.on_change(lambda: model_equation.set_content(state.equation_mathml()))
 
         with ui.tabs().classes('w-full') as tabs:
             properties = ui.tab('Properties')
@@ -59,10 +58,10 @@ def index():
                 create_correlations(state)
 
             with ui.tab_panel(dynamics):
-                create_dynamics()
+                create_dynamics(state)
 
             with ui.tab_panel(values):
-                create_values()
+                create_values(state)
 
 if __name__ in {'__main__', '__mp_main__'}:
     ui.run(title='ARMA Theory Explorer')

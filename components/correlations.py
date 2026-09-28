@@ -11,9 +11,9 @@ def create_correlations(state: ModelState) -> None:
     with ui.card().classes('w-full mb-4'):
         ui.label('What should I look for?').classes('font-bold')
         ui.label(
-            'Look for cutoff, gradual decay, alternating signs, '
-            'and oscillatory patterns. Change a coefficient and '
-            'see how the correlation structure responds.'
+            'These are population correlations implied by the specified model, '
+            'not estimates from sample data. Compare correlations across lags '
+            'as you change the coefficients.'
         )
 
     maximum_lag = ui.select(
