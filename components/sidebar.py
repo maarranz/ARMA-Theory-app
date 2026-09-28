@@ -45,6 +45,15 @@ def create_sidebar() -> ModelState:
             label='Try an example',
         ).classes('w-full')
 
+        ui.html(
+            'These models are discussed in the '
+            '<a href="https://github.com/maarranz/ARMA-theory/blob/main/ARMA_Theory_Examples.html" '
+            'target="_blank" rel="noopener noreferrer" class="text-primary underline">'
+            'ARMA Theory Examples</a>. Select one as a starting point, or change the '
+            'orders and coefficients to explore your own model.',
+            sanitize=False,  # Trusted static markup; preserve target="_blank".
+        ).classes('text-xs text-gray-600 leading-snug')
+
         ui.separator().classes('my-4')
 
         with ui.row().classes('w-full gap-4'):

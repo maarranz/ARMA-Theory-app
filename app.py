@@ -1,4 +1,6 @@
 """Application assembly; each page owns its model controls and callbacks."""
+import os
+
 from nicegui import ui
 
 from components.sidebar import create_sidebar
@@ -64,4 +66,11 @@ def index():
                 create_values(state)
 
 if __name__ in {'__main__', '__mp_main__'}:
-    ui.run(title='ARMA Theory Explorer')
+    hosted = 'PORT' in os.environ or os.environ.get('RENDER') == 'true'
+    ui.run(
+        title='ARMA Theory Explorer',
+        host='0.0.0.0' if hosted else '127.0.0.1',
+        port=int(os.environ.get('PORT', '8080')),
+        reload=not hosted,
+        show=not hosted,
+    )
